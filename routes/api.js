@@ -17,8 +17,8 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // Importación de Controladores
-const { listar, obtener, crear, actualizar, eliminar } = require('../controllers/artistas.Controller');
-const { getAllCanciones, getCancionById, createCancionArtista, deleteCancion, updateCancion } = require('../controllers/cancion.Controller');
+const { listar, obtener, crear, actualizar, eliminar } = require('../controllers/artistas.controller');
+const { getAllCanciones, getCancionById, createCancionArtista, deleteCancion, updateCancion } = require('../controllers/cancion.controller');
 
 // ==========================================
 // Rutas de artistas (MODIFICADAS CON MULTER)
