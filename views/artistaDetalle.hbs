@@ -1,0 +1,127 @@
+<!-- Botón Volver Minimalista -->
+<div class="mb-4">
+  <a href="/" class="btn btn-sm btn-link text-decoration-none fw-bold p-0 text-secondary btn-volver-home">
+    <i class="fas fa-arrow-left me-2"></i>Volver al Inicio
+  </a>
+</div>
+
+<!-- ENCABEZADO PREMIUM: Banner del Artista con Degradado Inmersivo -->
+<div class="position-relative rounded-4 overflow-hidden mb-5 shadow-lg header-artista-banner" 
+     style="background: linear-gradient(180deg, rgba(29, 185, 84, 0.2) 0%, #121212 100%), url('{{artista.imagenFondo}}') center/cover no-repeat; min-height: 280px; display: flex; align-items: flex-end; border: 1px solid #282828;">
+  
+  <!-- Overlay oscuro por si la imagen de fondo es muy clara -->
+  <div class="position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(to bottom, transparent 30%, rgba(18, 18, 18, 0.95) 100%); z-index: 1;"></div>
+
+  <!-- Información del Artista montada sobre el Banner -->
+  <div class="p-4 p-md-5 position-relative w-100 d-flex flex-column flex-md-row align-items-center gap-4" style="z-index: 2;">
+    
+    <!-- Foto de Perfil Circular con el Brillo Neón Característico -->
+    <div class="flex-shrink-0 d-flex align-items-center justify-content-center" style="width: 130px; height: 130px;">
+      <div class="rounded-circle" 
+           style="background-image: url('{{artista.imagenFondo}}'); 
+                  width: 120px; 
+                  height: 120px; 
+                  background-size: cover; 
+                  background-position: center; 
+                  background-repeat: no-repeat; 
+                  background-color: #282828; 
+                  border: 3px solid rgba(255, 255, 255, 0.9) !important; 
+                  box-shadow: 0 0 15px rgba(255, 255, 255, 0.6), 0 0 25px rgba(0, 123, 255, 0.4) !important;">
+        {{#unless artista.imagenFondo}}
+          <div class="h-100 d-flex align-items-center justify-content-center text-muted opacity-50" style="font-size: 2rem;">
+            <i class="fas fa-user"></i>
+          </div>
+        {{/unless}}
+      </div>
+    </div>
+
+    <!-- Textos del Artista -->
+    <div class="text-center text-md-start">
+      <span class="badge text-uppercase fw-bold mb-2 px-3 py-1.5" style="background-color: #1db954; font-size: 0.75rem; letter-spacing: 1px;">Artista Verificado <i class="fas fa-check-circle ms-1"></i></span>
+      <h1 class="display-4 fw-black text-white m-0 tracking-tight" style="font-weight: 800; letter-spacing: -1.5px;">{{artista.nombre}}</h1>
+      <p class="m-0 mt-2 text-muted" style="font-size: 1.05rem;">
+        <span class="text-white fw-bold">{{artista.genero}}</span> &bull; <i class="fas fa-globe-americas me-1 small"></i>{{artista.pais}}
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- CONTENIDO: Lista de canciones del artista -->
+<div class="row">
+  <div class="col-12">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <h3 class="fw-bold text-white mb-0" style="font-size: 1.4rem;">Canciones Populares</h3>
+        <p class="text-muted small m-0">Lista completa de temas disponibles de este artista.</p>
+      </div>
+      <!-- Aquí podrías enganchar un botón secundario si tienes el requerimiento de agregar canción -->
+    </div>
+
+    {{#if artista.canciones.length}}
+      <div class="card border-0" style="background-color: #121212; border: 1px solid #282828 !important; border-radius: 16px; overflow: hidden;">
+        <div class="table-responsive">
+          <table class="table table-dark table-hover mb-0 align-middle" style="background: transparent;">
+            <thead>
+              <tr style="border-bottom: 2px solid #282828; color: #b3b3b3; font-size: 0.85rem; text-uppercase: uppercase; letter-spacing: 0.5px;">
+                <th scope="col" class="ps-4" style="width: 60px;">#</th>
+                <th scope="col">Título</th>
+                <th scope="col">Álbum</th>
+                <th scope="col" class="text-end pe-4" style="width: 200px;">Reproducciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each artista.canciones}}
+                <tr class="fila-cancion-detalle" style="border-bottom: 1px solid rgba(255,255,255,0.02); cursor: pointer; transition: background 0.2s ease;">
+                  <!-- Número incremental -->
+                  <td class="ps-4 fw-bold text-muted">{{@index}}</td>
+                  
+                  <!-- Información del tema -->
+                  <td>
+                    <div class="fw-bold text-white fs-6 text-truncate" style="max-width: 350px;">{{this.titulo}}</div>
+                  </td>
+                  
+                  <!-- Álbum -->
+                  <td>
+                    <span style="color: #b3b3b3;">{{#if this.album}}{{this.album}}{{else}}<span class="text-muted fst-italic">Sencillo</span>{{/if}}</span>
+                  </td>
+                  
+                  <!-- Contador + Botón Reproducir seguro (Adaptado para home.js) -->
+                  <td class="text-end pe-4">
+                    <div class="d-flex align-items-center justify-content-end gap-3">
+                      <span class="badge border-0 rounded-pill py-2 px-3" style="background-color: #181818; color: #1db954;">
+                        <i class="fas fa-play me-1 small"></i>
+                        <!-- 🚨 Ponemos AMBOS formatos de clase e ID para que tu script lo encuentre -->
+                        <span id="plays-{{id}}" class="play-counter-{{id}} fw-bold">{{reproducciones}}</span>
+                      </span>
+                      
+                      <!-- 🚨 Ponemos AMBOS atributos: 'data-id' y 'data-cancion-id' -->
+                      <button class="btn btn-sm btn-reproducir rounded-circle p-0 d-flex align-items-center justify-content-center shadow" 
+                              data-id="{{id}}" 
+                              data-cancion-id="{{id}}" 
+                              style="width: 36px; height: 36px; background-color: #1db954; color: white; border: none; transition: all 0.2s;" 
+                              title="Reproducir">
+                        <i class="fas fa-play" style="font-size: 0.75rem; margin-left: 2px;"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    {{else}}
+      <!-- Estado Vacío -->
+      <div class="card border-0 text-center py-5" style="background-color: #181818; border: 1px solid #282828; border-radius: 16px;">
+        <div class="card-body style-vacio text-muted">
+          <i class="fas fa-music fa-3x mb-3 opacity-30"></i>
+          <h5 class="fw-bold text-white">No hay canciones registradas</h5>
+          <p class="m-0" style="color: #a7a7a7;">Este artista aún no tiene temas asignados en la base de datos.</p>
+        </div>
+      </div>
+    {{/if}}
+  </div>
+</div>
+
+
+<script src="/js/artistaDetalle.js"></script>

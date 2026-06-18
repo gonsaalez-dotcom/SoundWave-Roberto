@@ -1,0 +1,159 @@
+<!-- Encabezado Principal Premium -->
+<div class="row mb-5 align-items-center">
+  <div class="col-12 text-center text-md-start">
+    <div class="d-flex align-items-center justify-content-center justify-content-md-start gap-3">
+      <div class="d-flex align-items-center justify-content-center text-white bg-success rounded-circle shadow" style="width: 55px; height: 55px; background: linear-gradient(135deg, #1db954, #191414);">
+        <i class="fas fa-wave-square fs-4"></i>
+      </div>
+      <div>
+        <h1 class="display-5 fw-black text-white m-0 tracking-tight" style="letter-spacing: -1.5px; font-weight: 800;">SoundWave</h1>
+        <p class="lead m-0" style="color: #b3b3b3; font-size: 1rem;">Explora tus artistas favoritos, sus álbumes y sus canciones más populares.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Barra de Filtros Inmersiva (Glassmorphism) -->
+<div class="row mb-4">
+  <div class="col-12">
+    <div class="card border-0" style="background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 12px;">
+      <div class="card-body py-3 d-flex flex-wrap align-items-center justify-content-between gap-3">
+        <div class="d-flex align-items-center">
+          <i class="fas fa-filter me-2" style="color: #1db954;"></i>
+          <h6 class="mb-0 fw-bold text-white">Filtrar por Género</h6>
+        </div>
+        <form action="/" method="GET" class="d-flex align-items-center gap-2 mb-0 flex-grow-1 flex-md-grow-0" style="max-width: 400px;">
+          <select name="genero" id="generoSelect" class="form-select form-select-sm border-0 text-white shadow-none" data-seleccionado="{{generoSeleccionado}}" onchange="this.form.submit()" style="background-color: #282828; border-radius: 8px;">
+            <option value="">Todos los géneros</option>
+            {{#each generos}}
+              <option value="{{this}}">{{this}}</option>
+            {{/each}}
+          </select>
+          {{#if generoSeleccionado}}
+            <a href="/" class="btn btn-sm btn-outline-light text-nowrap border-0" style="background: rgba(255,255,255,0.1); border-radius: 8px;">
+              <i class="fas fa-times me-1"></i>Limpiar
+            </a>
+          {{/if}}
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Contenido Principal -->
+<div class="row g-4">
+  <!-- Barra Lateral: Top 10 Rediseñado -->
+  <div class="col-lg-4">
+    <div class="card border-0 h-100" style="background-color: #121212; border: 1px solid #282828; border-radius: 16px; overflow: hidden;">
+      <div class="card-header border-0 py-3 d-flex align-items-center justify-content-between" style="background-color: #000000;">
+        <h5 class="card-title mb-0 fw-bold text-white fs-6">
+          <i class="fas fa-chart-line text-warning me-2"></i>Top 10 Canciones
+        </h5>
+        <span class="badge" style="background: linear-gradient(90deg, #ff416c, #ff4b2b); font-weight: bold; letter-spacing: 0.5px;">HITS 🔥</span>
+      </div>
+      
+      {{#if topCanciones.length}}
+        <ol class="list-group list-group-numbered list-group-flush" style="background: transparent;">
+          {{#each topCanciones}}
+            <li class="list-group-item d-flex justify-content-between align-items-center py-3 border-0 item-cancion" style="background: transparent; border-bottom: 1px solid rgba(255,255,255,0.03) !important; color: #b3b3b3; transition: background 0.2s ease;">
+              <div class="ms-2 me-auto min-w-0 text-truncate">
+                <div class="fw-bold text-white text-truncate" title="{{titulo}}" style="font-size: 0.95rem;">{{titulo}}</div>
+                <small style="color: #b3b3b3;" class="d-block text-truncate mt-0.5">
+                  <i class="fas fa-user me-1" style="font-size: 0.75rem;"></i>{{artista.nombre}}
+                </small>
+              </div>
+              <div class="d-flex align-items-center gap-2 ms-2">
+                <span class="badge border-0 rounded-pill py-2 px-3" style="background-color: #181818; color: #1db954;">
+                  <i class="fas fa-play me-1 small"></i>
+                  <span class="play-counter-{{id}} fw-bold">{{reproducciones}}</span>
+                </span>
+                <button class="btn btn-sm btn-reproducir rounded-circle p-0 d-flex align-items-center justify-content-center" data-cancion-id="{{id}}" style="width: 32px; height: 32px; background-color: #1db954; color: white; border: none; transition: transform 0.2s;" title="Reproducir">
+                  <i class="fas fa-play" style="font-size: 0.75rem; margin-left: 2px;"></i>
+                </button>
+              </div>
+            </li>
+          {{/each}}
+        </ol>
+      {{else}}
+        <div class="card-body text-center py-5" style="color: #b3b3b3;">
+          <i class="fas fa-compact-disc fa-3x mb-3 text-muted opacity-50"></i>
+          <p class="mb-0">Aún no hay canciones registradas.</p>
+        </div>
+      {{/if}}
+    </div>
+  </div>
+
+  <!-- Panel de Artistas -->
+  <div class="col-lg-8" >
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h3 class="fw-bold text-white mb-0" style="font-size: 1.5rem;">Artistas</h3>
+      <a href="/artista/nuevo" class="btn btn-sm text-white fw-bold px-3 py-2" style="background-color: #1db954; border-radius: 50px; font-size: 0.85rem;">
+        <i class="fas fa-user-plus me-1"></i>Nuevo Artista
+      </a>
+    </div>
+
+    {{#if artistas.length}}
+    <div class="row">
+      {{#each artistas}}
+        <div class="col-12 col-md-6 mb-4">
+          <!-- Tarjeta Mejorada con Efecto de Elevación y Brillo Suave -->
+          <div class="p-3 d-flex align-items-center justify-content-between tarjeta-artista" 
+               style="background-color: #181818 !important; border-radius: 12px; border: 1px solid #282828; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); cursor: pointer;">
+            
+            <!-- SECTOR IZQUIERDO: Información del Artista -->
+            <div style="flex: 1 !important; min-width: 0 !important; padding-right: 15px !important; display: flex; flex-direction: column; justify-content: center;">
+              <h5 class="card-title fw-bold m-0 text-white text-truncate" style="font-size: 1.1rem;">
+                {{this.nombre}}
+              </h5>
+              <p class="card-text small m-0 mt-1" style="color: #a7a7a7 !important;">
+                <span class="badge bg-dark text-light me-1" style="border: 1px solid #333;">{{this.genero}}</span> &bull; {{this.pais}}
+              </p>
+              <a href="/artista/{{this.id}}" class="btn btn-sm btn-light fw-bold text-dark px-3 shadow-sm mt-3 align-self-start btn-perfil-tarjeta" style="font-size: 0.75rem; border-radius: 50px;">
+                <i class="fas fa-music me-1 small"></i>Ver Perfil
+              </a>
+            </div>
+
+            <!-- SECTOR DERECHO: Imagen de perfil circular con brillo restaurado -->
+            <div class="d-flex align-items-center justify-content-center" style="flex-shrink: 0 !important; width: 84px !important; height: 84px !important; margin-left: 10px;">
+              <div class="rounded-circle" 
+                   style="background-image: url('{{this.imagenFondo}}'); 
+                          width: 80px !important; 
+                          height: 80px !important; 
+                          background-size: cover !important; 
+                          background-position: center !important; 
+                          background-repeat: no-repeat !important; 
+                          background-color: #282828 !important; 
+                          border: 2px solid rgba(255, 255, 255, 0.8) !important; 
+                          box-shadow: 0 0 12px rgba(255, 255, 255, 0.5), 0 0 20px rgba(0, 123, 255, 0.3) !important; 
+                          display: block !important;">
+                
+                {{#unless this.imagenFondo}}
+                  <div class="h-100 d-flex align-items-center justify-content-center text-muted opacity-50" style="font-size: 1.2rem;">
+                    <i class="fas fa-user"></i>
+                  </div>
+                {{/unless}}
+                
+              </div>
+            </div>
+
+          </div>
+        </div>
+      {{/each}}
+    </div>
+
+    {{else}}
+      <div class="card border-0 text-center py-5" style="background-color: #181818; border: 1px solid #282828; border-radius: 16px;">
+        <div class="card-body" style="color: #b3b3b3;">
+          <i class="fas fa-users-slash fa-3x mb-3 opacity-40"></i>
+          <h5 class="fw-bold text-white">No se encontraron artistas</h5>
+          <p style="color: #a7a7a7;">No hay artistas registrados{{#if generoSeleccionado}} para el género "{{generoSeleccionado}}"{{/if}}.</p>
+          <a href="/artista/nuevo" class="btn btn-sm mt-2 fw-bold text-white" style="background-color: #1db954; border-radius: 50px; padding: 8px 20px;">
+            <i class="fas fa-plus me-1"></i>Agregar Primer Artista
+          </a>
+        </div>
+      </div>
+    {{/if}}
+  </div>
+</div>
+
+<script src="/js/home.js"></script>

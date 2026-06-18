@@ -1,0 +1,137 @@
+html<!-- Botón Volver Minimalista Dinámico -->
+<div class="mb-4">
+  <a href="{{#if esNuevo}}/{{else}}/artista/{{artista.id}}{{/if}}" class="btn btn-sm btn-link text-decoration-none fw-bold p-0 text-secondary btn-volver-form">
+    <i class="fas fa-arrow-left me-2"></i>Volver
+  </a>
+</div>
+
+<div class="row justify-content-center">
+  <div class="col-12 col-md-8 col-lg-6 mx-auto">
+    <!-- Tarjeta del Formulario Estilo Premium (Modo Oscuro) -->
+    <div class="card border-0 shadow-lg p-2 p-md-3" style="background-color: #121212; border: 1px solid #282828 !important; border-radius: 16px;">
+      
+      <div class="card-body">
+        <!-- Encabezado contextual dinámico -->
+        <div class="text-center mb-4">
+          
+          <!-- Contenedor del ícono con clases CSS limpias para evitar errores de compilación -->
+          <div class="d-inline-flex align-items-center justify-content-center text-white rounded-circle shadow mb-3 {{#if esNuevo}}bg-nuevo-gradient{{else}}bg-editar-gradient{{/if}}" 
+               style="width: 55px; height: 55px;">
+            {{#if esNuevo}}
+              <i class="fas fa-user-plus fs-5"></i>
+            {{else}}
+              <i class="fas fa-user-edit fs-5"></i>
+            {{/if}}
+          </div>
+          
+          <h2 class="fw-bold text-white tracking-tight m-0" style="font-weight: 800; font-size: 1.6rem;">
+            {{#if esNuevo}}Registrar Nuevo Artista{{else}}Editar Artista{{/if}}
+          </h2>
+          {{#unless esNuevo}}
+            <p class="text-success small fw-bold m-0 mt-1" style="letter-spacing: 0.5px;">{{artista.nombre}}</p>
+          {{/unless}}
+        </div>
+
+        <!-- Formulario respetando estrictamente tus actions y multipart -->
+        <form action="{{#if esNuevo}}/artista{{else}}/artista/{{artista.id}}/editar{{/if}}" method="POST" enctype="multipart/form-data">
+          
+          <!-- Campo: Nombre del Artista -->
+          <div class="mb-3">
+            <label for="nombre" class="form-label small fw-bold text-uppercase" style="color: #b3b3b3; letter-spacing: 0.5px;">Nombre del Artista</label>
+            <div class="input-group-custom">
+              <span class="icon-span"><i class="fas fa-user text-muted"></i></span>
+              <input 
+                type="text" 
+                class="form-control-custom" 
+                id="nombre" 
+                name="nombre" 
+                value="{{artista.nombre}}" 
+                placeholder="Ej. The Beatles, Shakira, Daft Punk" 
+                required
+              />
+            </div>
+            <div class="form-text text-muted" style="font-size: 0.75rem; margin-top: 4px;">Introduce el nombre oficial o nombre artístico del solista o banda.</div>
+          </div>
+          
+          <div class="row">
+            <!-- Campo: Género Musical -->
+            <div class="col-md-6 mb-3">
+              <label for="genero" class="form-label small fw-bold text-uppercase" style="color: #b3b3b3; letter-spacing: 0.5px;">Género Musical</label>
+              <div class="input-group-custom">
+                <span class="icon-span"><i class="fas fa-tags text-muted"></i></span>
+                <input 
+                  type="text" 
+                  class="form-control-custom" 
+                  id="genero" 
+                  name="genero" 
+                  value="{{artista.genero}}" 
+                  placeholder="Ej. Rock, Pop, Electronic" 
+                  required
+                />
+              </div>
+              <div class="form-text text-muted" style="font-size: 0.75rem; margin-top: 4px;">Especifica el género principal.</div>
+            </div>
+            
+            <!-- Campo: País de Origen -->
+            <div class="col-md-6 mb-3">
+              <label for="pais" class="form-label small fw-bold text-uppercase" style="color: #b3b3b3; letter-spacing: 0.5px;">País de Origen</label>
+              <div class="input-group-custom">
+                <span class="icon-span"><i class="fas fa-globe text-muted"></i></span>
+                <input 
+                  type="text" 
+                  class="form-control-custom" 
+                  id="pais" 
+                  name="pais" 
+                  value="{{artista.pais}}" 
+                  placeholder="Ej. Reino Unido, Francia" 
+                  required
+                />
+              </div>
+              <div class="form-text text-muted" style="font-size: 0.75rem; margin-top: 4px;">Indica la base de operaciones.</div>
+            </div>
+          </div>
+
+          <!-- Campo: Archivo de Imagen con Multer -->
+          <div class="mb-4">
+            <label for="imagenFondo" class="form-label small fw-bold text-uppercase" style="color: #b3b3b3; letter-spacing: 0.5px;">Imagen de Fondo (Opcional)</label>
+            <div class="input-group-custom">
+              <span class="icon-span"><i class="fas fa-image text-muted"></i></span>
+              <input 
+                type="file" 
+                class="form-control-custom custom-file-input" 
+                id="imagenFondo" 
+                name="imagenFondo" 
+                accept="image/*"
+              />
+            </div>
+            <div class="form-text text-muted" style="font-size: 0.75rem; margin-top: 4px;">Sube una imagen para personalizar la casilla. Formatos: JPG, PNG.</div>
+            
+            {{#unless esNuevo}}
+              {{#if artista.imagenFondo}}
+                <div class="mt-2 p-2 rounded border border-secondary" style="background-color: #181818; border-style: dashed !important;">
+                  <span class="small text-muted d-flex align-items-center gap-2">
+                    <i class="fas fa-paperclip text-success"></i> Imagen actual cargada: 
+                    <a href="{{artista.imagenFondo}}" target="_blank" class="text-success fw-bold text-decoration-none border-bottom border-success">Ver archivo adjunto</a>
+                  </span>
+                </div>
+              {{/if}}
+            {{/unless}}
+          </div>
+          
+          <!-- Botones de Control de Formulario -->
+          <div class="d-flex gap-2 justify-content-end border-top pt-4" style="border-color: #282828 !important;">
+            <a href="{{#if esNuevo}}/{{else}}/artista/{{artista.id}}{{/if}}" class="btn btn-sm text-white fw-bold px-4 py-2 border-0" style="background: rgba(255,255,255,0.05); border-radius: 50px; color: #b3b3b3 !important;">
+              Cancelar
+            </a>
+            <button type="submit" class="btn btn-sm text-white fw-bold px-4 py-2 btn-guardar-artista" style="background-color: #1db954; border-radius: 50px;">
+              <i class="fas fa-save me-1"></i>Guardar Artista
+            </button>
+          </div>
+          
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+

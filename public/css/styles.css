@@ -1,0 +1,241 @@
+body {
+  background-color: #0b0b0d !important; /* Un negro profundo y moderno */
+  color: #ffffff !important;           /* Texto blanco por defecto */
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* Casilla del Artista */
+.casilla-artista-dinamica {
+  height: 240px; 
+  border-radius: 12px;
+  overflow: hidden;
+  border: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  
+  /* Ajuste correcto de la imagen de fondo */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #212529; /* Fondo gris oscuro por defecto */
+}
+
+/* Efecto hover elegante */
+.casilla-artista-dinamica:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Capa oscura superpuesta */
+.capa-gradiente-oscura {
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 15%, rgba(0, 0, 0, 0.4) 60%, rgba(0, 0, 0, 0) 100%);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  box-sizing: border-box;
+}
+
+.text-shadow {
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
+}
+
+.style-contenedor-protector {
+  background-color: rgba(24, 26, 27, 0.8) !important; /* Gris oscuro fuerte con 80% de opacidad */
+  backdrop-filter: blur(8px);                         /* Desenfoque de fondo estilo Spotify */
+  -webkit-backdrop-filter: blur(8px);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);    /* Línea sutil superior */
+  width: 100%;
+}
+
+/* La imagen ocupa exactamente el 55% superior de la casilla */
+.sw-zona-imagen {
+  height: 55% !important;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #282a2b; /* Fondo gris si la imagen falla */
+}
+
+  /* El texto ocupa el 45% inferior con fondo oscuro bloqueado */
+.sw-zona-informacion {
+  height: 45% !important;
+  background-color: #121214 !important; /* Fondo negro puro */
+}
+
+.sw-tarjeta-artista {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.sw-boton-perfil {
+  background-color: #ffffff !important;
+  color: #121214 !important;
+  border: none !important;
+  padding: 8px !important;
+  border-radius: 6px !important;
+}
+  
+.sw-boton-perfil:hover {
+  background-color: #e2e2e2 !important;
+}
+
+/* Configuración del Banner Superior */
+.sw-banner-artista {
+  height: 320px; /* Altura ideal de cabecera */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #121214; /* Color de respaldo si no hay imagen */
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+/* Capa gradiente que oscurece suavemente la base del banner */
+.sw-banner-informacion {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top, rgba(18, 18, 20, 0.95) 0%, rgba(18, 18, 20, 0.4) 50%, rgba(0, 0, 0, 0) 100%);
+}
+
+/* Caja translúcida protectora para el texto (Glassmorphism) */
+.sw-tarjeta-texto {
+  background-color: rgba(24, 26, 27, 0.75) !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  max-width: 600px; /* Evita que el texto se estire infinito en pantallas anchas */
+}
+
+/* Detalle estético para el texto */
+.tracking-wider {
+  letter-spacing: 1px;
+  font-size: 0.75rem;
+}
+
+/* Contenedor principal del perfil */
+.sw-perfil-contenedor {
+  overflow: hidden;
+  border-radius: 16px;
+  background-color: #121214; /* Fondo negro puro */
+}
+
+/* Altura física fija para la foto del artista */
+.sw-perfil-imagen {
+  height: 220px !important;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #282a2b;
+}
+
+/* Bloque de texto con fondo oscuro garantizado */
+.sw-perfil-info-bloque {
+  background-color: #121214 !important;
+  color: #ffffff !important;
+}
+
+/* Estilo estético para la etiqueta superior */
+.tracking-wider {
+  letter-spacing: 1px;
+  font-size: 0.7rem;
+}
+
+.tarjeta-artista:hover {
+  background-color: #282828 !important;
+  transform: translateY(-4px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.5) !important;
+  border-color: #1db954 !important;
+  }
+.item-cancion:hover {
+  background-color: rgba(255,255,255,0.04) !important;
+}
+.btn-reproducir:hover {
+  transform: scale(1.1);
+  background-color: #1ed760 !important;
+}
+
+.btn-perfil-tarjeta:hover {
+  background-color: #1db954 !important;
+  color: white !important;
+  border-color: #1db954 !important;
+}
+
+.btn-volver-home:hover {
+  color: #1db954 !important;
+  transform: translateX(-3px);
+  transition: all 0.2s ease;
+}
+.fila-cancion-detalle:hover {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+}
+.fila-cancion-detalle:hover .btn-reproducir {
+  background-color: #1ed760 !important;
+  transform: scale(1.1);
+}
+.table > :not(caption) > * > * {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+/* Degradados para las burbujas de los iconos sin romper Handlebars */
+  .bg-nuevo-gradient {
+    background: linear-gradient(135deg, #1db954, #191414) !important;
+  }
+  .bg-editar-gradient {
+    background: linear-gradient(135deg, #ff9800, #191414) !important;
+  }
+
+  .btn-volver-form:hover {
+    color: #1db954 !important;
+    transform: translateX(-3px);
+    transition: all 0.2s ease;
+  }
+  .btn-guardar-artista:hover {
+    background-color: #1ed760 !important;
+    transform: scale(1.02);
+    transition: all 0.2s ease;
+  }
+  
+  
+.input-group-custom {
+  display: flex;
+  align-items: center;
+  background-color: #282828;
+  border-radius: 8px;
+  padding-left: 14px;
+  border: 1px solid transparent;
+  transition: border 0.2s ease, background-color 0.2s ease;
+}
+.input-group-custom:focus-within {
+  border: 1px solid #1db954;
+  background-color: #333333;
+}
+.icon-span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #b3b3b3;
+  font-size: 0.9rem;
+}
+.form-control-custom {
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: 10px 14px;
+  color: white;
+  font-size: 0.9rem;
+  outline: none;
+}
+.form-control-custom::placeholder {
+  color: #727272;
+}
+  
+  /* Ajuste específico para el input de tipo file */
+.custom-file-input {
+  color: #b3b3b3;
+  font-size: 0.85rem;
+  padding: 8px 14px;
+  cursor: pointer;
+} 
