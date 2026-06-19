@@ -22,7 +22,13 @@ const viewsController = require('../controllers/views.Controller');
 // ==========================================
 router.get('/artista/nuevo', viewsController.formularioNuevoArtista);
 router.get('/artista/:id/editar', viewsController.formularioEditarArtista);
-router.get('/artista/:id/cancion/nueva', viewsController.formularioNuevaCancion);
+router.get('/cancion/nueva', (req, res, next) => {
+  if (typeof viewsController.formularioNuevaCancion === 'function') {
+    return viewsController.formularioNuevaCancion(req, res, next);
+  }
+  res.status(500).send('Error interno: El controlador de la vista no está definido correctamente.');
+});
+router.get('/cancion/nueva', viewsController.formularioNuevaCancion);
 router.get('/artista/:id', viewsController.detalleArtista);
 router.get('/shuffle', viewsController.shuffle);
 router.get('/', viewsController.home);
@@ -42,8 +48,33 @@ router.post('/artista/:id/cancion', viewsController.crearCancion);
 // Ruta para sumar reproducciones
 router.post('/api/reproducir/:id', viewsController.reproducirCancionApi);
 
+// Ruta Crear Canción
+router.post('/cancion/nueva', async (req, res) => {
+  try {
+    req.params.id = req.body.artistaId; 
+    await viewsController.crearCancion(req, res);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error al procesar la creación de la canción');
+  }
+});
+
 // Eliminar
 router.post('/artista/:id/eliminar', viewsController.eliminarArtista);
 router.post('/cancion/:id/eliminar', viewsController.eliminarCancion);
+
+
+// 2. Al pulsar "Guardar", se envían los datos a tu función "crearCancion".
+// NOTA: Como tu función original usa "req.params.id", cambiamos el formulario POST para enviar 
+// la canción directamente al artista usando el "artistaId" que el cliente elija en la pantalla.
+router.post('/cancion/nueva', async (req, res) => {
+  try {
+    req.params.id = req.body.artistaId; 
+    await viewsController.crearCancion(req, res);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error al procesar la creación de la canción');
+  }
+});
 
 module.exports = router;

@@ -1,79 +1,93 @@
-<div class="row">
-  <div class="col-md-8 col-lg-6 mx-auto">
-    <div class="mb-3">
-      <a href="/artista/{{artista.id}}" class="btn btn-sm btn-outline-secondary">
-        <i class="fas fa-arrow-left me-1"></i>Volver al Artista
-      </a>
-    </div>
+<!-- Botón Volver Minimalista Dinámico -->
+<div class="mb-4">
+  <a href="{{#if artista}}/artista/{{artista.id}}{{else}}/{{/if}}" class="btn btn-sm btn-link text-decoration-none fw-bold p-0 text-secondary btn-volver-form">
+   <i class="fas fa-arrow-left me-2"></i>Volver
+  </a>
+</div>
 
-    <!-- Tarjeta del Formulario -->
-    <div class="card border-0 shadow-sm">
-      <div class="card-header bg-dark text-white py-3">
-        <h4 class="card-title mb-0 fw-bold text-center">
-          <i class="fas fa-plus-circle text-success me-2"></i>Agregar Nueva Canción
-        </h4>
-      </div>
+<div class="row justify-content-center">
+  <div class="col-12 col-md-8 col-lg-6 mx-auto">
+    
+    <!-- Tarjeta del Formulario Estilo Premium (Modo Oscuro) -->
+    <div class="card border-0 shadow-lg p-2 p-md-3" style="background-color: #121212; border: 1px solid #282828 !important; border-radius: 16px;">
       
-      <div class="card-body p-4">
-        <div class="alert alert-secondary py-2 px-3 mb-4 d-flex align-items-center justify-content-between">
-          <span class="text-muted"><i class="fas fa-user-tag me-2"></i>Artista asociado:</span>
-          <span class="fw-bold text-dark fs-5">{{artista.nombre}}</span>
+      <div class="card-body">
+        <div class="text-center mb-4">
+          <div class="d-inline-flex align-items-center justify-content-center text-white rounded-circle shadow mb-3 bg-nueva-cancion-gradient" 
+               style="width: 55px; height: 55px;">
+            <i class="fas fa-music fs-5"></i>
+          </div>
+          <h2 class="fw-bold text-white tracking-tight m-0" style="font-weight: 800; font-size: 1.6rem;">
+            Agregar Nueva Canción
+          </h2>
         </div>
 
-        <form action="/artista/{{artista.id}}/cancion" method="POST">
+        <form action="/cancion/nueva" method="POST">
+
+          <!-- 🚨 BLOQUE INTELIGENTE: Detecta si venimos de un Artista o del Home -->
+          {{#if artista}}
+            <!-- FLUJO A: Venimos de la página del artista (Fijo y seguro) -->
+            <div class="d-flex align-items-center justify-content-between py-2.5 px-3 mb-4 rounded border border-secondary" 
+                 style="background-color: #181818; border-style: dashed !important; border-color: #333 !important;">
+              <span style="color: #b3b3b3; font-size: 0.85rem; font-weight: bold; letter-spacing: 0.5px;">
+                <i class="fas fa-user-tag me-2 text-success"></i>ARTISTA ASOCIADO:
+              </span>
+              <span class="fw-bold text-white fs-6">{{artista.nombre}}</span>
+            </div>
+            <!-- Campo oculto para enviar el ID del artista actual -->
+            <input type="hidden" name="artistaId" value="{{artista.id}}">
+
+          {{else}}
+            <!-- FLUJO B: Venimos del Home (Menú desplegable para elegir) -->
+            <div class="mb-3">
+              <label for="artistaId" class="form-label small fw-bold text-uppercase" style="color: #b3b3b3; letter-spacing: 0.5px;">Seleccionar Artista / Banda</label>
+              <div class="input-group-custom">
+                <span class="icon-span"><i class="fas fa-user-circle text-muted"></i></span>
+                <select class="form-control-custom" id="artistaId" name="artistaId" required style="cursor: pointer;">
+                  <option value="" disabled selected hidden>Elige el artista de la lista...</option>
+                  {{#each artistas}}
+                    <option value="{{this.id}}" style="background-color: #282828; color: white;">{{this.nombre}}</option>
+                  {{/each}}
+                </select>
+              </div>
+              <div class="form-text text-muted" style="font-size: 0.75rem; margin-top: 4px;">Debes asignar la canción a un artista de tu catálogo.</div>
+            </div>
+          {{/if}}
           
+          <!-- Campo: Título de la Canción -->
           <div class="mb-3">
-            <label for="titulo" class="form-label fw-bold">Título de la Canción</label>
-            <div class="input-group">
-              <span class="input-group-text bg-light"><i class="fas fa-heading text-muted"></i></span>
-              <input 
-                type="text" 
-                class="form-control" 
-                id="titulo" 
-                name="titulo" 
-                placeholder="Ej. Yesterday, Hips Don't Lie, Get Lucky" 
-                required
-              />
+            <label for="titulo" class="form-label small fw-bold text-uppercase" style="color: #b3b3b3; letter-spacing: 0.5px;">Título de la Canción</label>
+            <div class="input-group-custom">
+              <span class="icon-span"><i class="fas fa-heading text-muted"></i></span>
+              <input type="text" class="form-control-custom" id="titulo" name="titulo" placeholder="Ej. Yesterday, Get Lucky" required />
             </div>
           </div>
           
+          <!-- Campo: Álbum -->
           <div class="mb-3">
-            <label for="album" class="form-label fw-bold">Álbum</label>
-            <div class="input-group">
-              <span class="input-group-text bg-light"><i class="fas fa-compact-disc text-muted"></i></span>
-              <input 
-                type="text" 
-                class="form-control" 
-                id="album" 
-                name="album" 
-                placeholder="Ej. Help!, Oral Fixation Vol. 2, Random Access Memories" 
-                required
-              />
+            <label for="album" class="form-label small fw-bold text-uppercase" style="color: #b3b3b3; letter-spacing: 0.5px;">Álbum</label>
+            <div class="input-group-custom">
+              <span class="icon-span"><i class="fas fa-compact-disc text-muted"></i></span>
+              <input type="text" class="form-control-custom" id="album" name="album" placeholder="Ej. Discovery, Help!" required />
             </div>
           </div>
           
+          <!-- Campo: Duración -->
           <div class="mb-4">
-            <label for="duracion" class="form-label fw-bold">Duración (en segundos)</label>
-            <div class="input-group">
-              <span class="input-group-text bg-light"><i class="fas fa-clock text-muted"></i></span>
-              <input 
-                type="number" 
-                class="form-control" 
-                id="duracion" 
-                name="duracion" 
-                min="1" 
-                placeholder="Ej. 240 (equivale a 4 minutos)" 
-                required
-              />
+            <label for="duracion" class="form-label small fw-bold text-uppercase" style="color: #b3b3b3; letter-spacing: 0.5px;">Duración (en segundos)</label>
+            <div class="input-group-custom">
+              <span class="icon-span"><i class="fas fa-clock text-muted"></i></span>
+              <input type="number" class="form-control-custom" id="duracion" name="duracion" min="1" placeholder="Ej. 240" required />
             </div>
-            <div class="form-text">Introduce el valor total en segundos. Ejemplos: 180 (3m 00s), 215 (3m 35s).</div>
+            <div class="form-text text-muted" style="font-size: 0.75rem; margin-top: 4px;">Introduce el valor total en segundos (ej. 180 = 3 minutos).</div>
           </div>
           
-          <div class="d-flex gap-2 justify-content-end border-top pt-3">
-            <a href="/artista/{{artista.id}}" class="btn btn-outline-secondary px-4">
+          <!-- Botones de Control del Formulario -->
+          <div class="d-flex gap-2 justify-content-end border-top pt-4" style="border-color: #282828 !important;">
+            <a href="{{#if artista}}/artista/{{artista.id}}{{else}}/{{/if}}" class="btn btn-sm text-white fw-bold px-4 py-2 border-0" style="background: rgba(255,255,255,0.05); border-radius: 50px; color: #b3b3b3 !important;">
               Cancelar
             </a>
-            <button type="submit" class="btn btn-success px-4">
+            <button type="submit" class="btn btn-sm text-white fw-bold px-4 py-2 btn-guardar-cancion" style="background-color: #1db954; border-radius: 50px;">
               <i class="fas fa-save me-1"></i>Guardar Canción
             </button>
           </div>

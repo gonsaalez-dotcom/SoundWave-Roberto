@@ -108,23 +108,75 @@ const viewsController = {
     }
   },
   
-  // Formulario para nueva cancion
-  async formularioNuevaCancion(req, res) {
+async actualizarArtista(req, res) {
     try {
       const { id } = req.params;
-      const artista = await Artista.findByPk(id);
+      const { nombre, genero, pais } = req.body;
       
+      const artista = await Artista.findByPk(id);
       if (!artista) {
         return res.status(404).send('Artista no encontrado');
       }
+
+      const datosActualizados = { nombre, genero, pais };
+
+      // Si se sube una nueva imagen de fondo, la actualizamos
+      if (req.file) {
+        datosActualizados.imagenFondo = `/uploads/${req.file.filename}`;
+      }
       
+      await artista.update(datosActualizados);
+      res.redirect(`/artista/${id}`);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Error al actualizar el artista');
+    }
+  }, // <--- Esta coma y llave cierran perfectamente actualizarArtista
+
+  async formularioNuevaCancion(req, res) {
+    try {
+      // Traemos todos los artistas para poblar el <select> del formulario
+      const artistas = await Artista.findAll({ order: [['nombre', 'ASC']] });
+      const artistasPlanos = artistas.map(a => a.toJSON());
+
       res.render('cancionForm', {
-        title: `SoundWave - Nueva Cancion para ${artista.nombre}`,
-        artista: artista.toJSON()
+        title: 'SoundWave - Nueva Canción',
+        artistas: artistasPlanos,
+        esNuevo: true
       });
     } catch (error) {
       console.error(error);
-      res.status(500).send('Error al cargar el formulario');
+      res.status(500).send('Error al cargar el formulario de canciones');
+    }
+  },// <--- Esta coma separa el nuevo método del siguiente
+
+  // Crear cancion desde formulario (Tu método original intacto)
+  async crearCancion(req, res) {
+    try {
+      const { id } = req.params;
+      const { titulo, album, duracion } = req.body;
+      
+      const artista = await Artista.findByPk(id);
+      if (!artista) {
+        return res.status(404).send('Artista no encontrado');
+      }
+
+      // Capturamos la carátula/portada de la canción con Multer
+      const portada = req.file ? `/uploads/${req.file.filename}` : null;
+      
+      await Cancion.create({
+        titulo,
+        album,
+        duracion: parseInt(duracion),
+        artistaId: id,
+        reproducciones: 0,
+        portada: portada // Guardamos la ruta en PostgreSQL
+      });
+      
+      res.redirect(`/artista/${id}`);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Error al crear la cancion');
     }
   },
   
@@ -295,4 +347,35 @@ const viewsController = {
   }
 };
 
+viewsController.formularioNuevaCancion = async function(req, res) {
+  try {
+    const { id } = req.params; // Intentamos leer el ID si venimos de la URL del artista
+
+    if (id) {
+      // FLUJO A: Venimos desde el detalle de un artista específico
+      const artista = await Artista.findByPk(id);
+      if (!artista) return res.status(404).send('Artista no encontrado');
+
+      return res.render('cancionForm', {
+        title: 'SoundWave - Nueva Canción',
+        artista: artista.toJSON(),
+        esNuevo: true
+      });
+    } else {
+      // FLUJO B: Venimos haciendo clic desde el botón global del Home
+      const artistas = await Artista.findAll({ order: [['nombre', 'ASC']] });
+      const artistasPlanos = artistas.map(a => a.toJSON());
+
+      return res.render('cancionForm', {
+        title: 'SoundWave - Nueva Canción',
+        artistas: artistasPlanos,
+        artista: null, // Indicamos que no hay artista preseleccionado fijo
+        esNuevo: true
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error al cargar el formulario de canciones');
+  }
+};
 module.exports = viewsController;

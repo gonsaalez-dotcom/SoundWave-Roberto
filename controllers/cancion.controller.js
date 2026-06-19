@@ -99,10 +99,56 @@ const deleteCancion = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+// === NUEVAS FUNCIONES PARA EL FRONTEND DE HANDLEBARS ===
+
+// 1. Renderiza visualmente el formulario cargando los artistas de la BD
+const mostrarFormularioCrear = async (req, res) => {
+  try {
+    const artistas = await Artista.findAll({ order: [['nombre', 'ASC']] });
+    res.render('cancionForm', { 
+      artistas: artistas,
+      esNuevo: true 
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error al cargar el formulario de canciones');
+  }
+};
+
+// 2. Procesa la información enviada por el formulario y redirige al Home
+const guardarNuevaCancion = async (req, res) => {
+  try {
+    const { titulo, album, duracion, artistaId } = req.body;
+    
+    // Validación básica en el servidor
+    if (!titulo || !duracion || !artistaId) {
+      return res.status(400).send('Faltan campos obligatorios');
+    }
+
+    // Creamos la canción vinculándola al artistaId seleccionado en el <select>
+    await Cancion.create({
+      titulo,
+      album: album || 'Sencillo',
+      duracion: parseInt(duracion),
+      artistaId: parseInt(artistaId),
+      reproducciones: 0
+    });
+
+    // Éxito: Redirigimos al usuario a la página de inicio para ver el cambio
+    res.redirect('/');
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error al guardar la canción en la base de datos');
+  }
+};
+
 module.exports = {
   getAllCanciones,
   getCancionById,
   createCancionArtista,
   updateCancion,
   deleteCancion,
+  mostrarFormularioCrear,
+  guardarNuevaCancion
 };
